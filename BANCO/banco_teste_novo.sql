@@ -1,5 +1,5 @@
 CREATE TABLE T_PE_USUARIOS (
-    id_usuario NUMBER PRIMARY KEY, -- Alterado para NUMBER para consistência
+    id_usuario NUMBER PRIMARY KEY, 
     nome VARCHAR2(100) NOT NULL,
     email VARCHAR2(100) NOT NULL UNIQUE,
     senha VARCHAR2(50) NOT NULL
