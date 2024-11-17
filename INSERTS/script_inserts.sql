@@ -60,6 +60,3 @@ VALUES (2, 'U002', 200, TO_DATE('2024-10-15', 'YYYY-MM-DD'));
 
 INSERT INTO T_PE_PONTUACAO_USUARIO (id_pontuacao, id_usuario, pontos_totais, data_atualizacao)
 VALUES (3, 'U003', 180, TO_DATE('2024-10-15', 'YYYY-MM-DD'));
-
-
-
