@@ -70,15 +70,20 @@ def inserir_pontuacao(conn, id_pontuacao, id_usuario, pontos_totais, data_atuali
 def inserir_dados(conn):
     print("Inserindo dados automaticamente nas tabelas...")
 
-    nomes = ["Ana", "Carlos", "Fernanda", "João", "Larissa", "Marcelo", "Patricia", "Ricardo", "Vanessa", "Gustavo"]
-    for i in range(1, 11):
+    nomes = ["Ana", "Carlos", "Fernanda", "João", "Larissa", "Marcelo", "Patricia", "Ricardo", "Vanessa", "Gustavo",
+             "Pedro", "Luiza", "Rafael", "Marcela", "Vitor", "Paula", "Felipe", "Isabela", "Danilo", "Marta",
+             "Roberto", "Simone", "Gustavo", "Bárbara", "Thiago", "Jéssica", "Eduardo", "Mariana", "André", "Tatiane",
+             "Bruna", "Carla", "Tiago", "Lúcio", "Aline", "Cristiano", "Sabrina", "Victor", "Débora", "José", "Lúcia",
+             "Rogério", "Daniela", "Anderson", "Cristiane", "César", "Natália", "Rui", "Cláudia", "Alfredo", "Gisele"]
+
+    for i in range(1, 51):
         nome = nomes[i-1]
         email = f"{nome.lower()}@exemplo.com"
         senha = f"senha{i * 3}"
         inserir_usuario(conn, i, nome, email, senha)
 
-    for i in range(1, 11):
-        id_usuario = random.randint(1, 10)
+    for i in range(1, 51):
+        id_usuario = i  # Mantendo o id_usuario consistente com o número do loop
         logradouro = f"Rua {random.choice(['Avenida', 'Rua', 'Praça'])} {random.randint(1, 999)}"
         numero = str(random.randint(1, 999))
         complemento = f"Bloco {random.choice(['A', 'B', 'C'])} - {random.choice(['Apto', 'Casa', 'Comércio'])} {i}"
@@ -88,21 +93,21 @@ def inserir_dados(conn):
         cep = f"{random.randint(10000, 99999)}-{random.randint(1000, 9999)}"
         inserir_endereco(conn, i, id_usuario, logradouro, numero, complemento, bairro, cidade, estado, cep)
 
-    for i in range(1, 11):
-        id_usuario = random.randint(1, 10)
+    for i in range(1, 51):
+        id_usuario = i  # Garantir que o id_usuario seja o mesmo
         tipo_residencia = random.choice(["Casa", "Apartamento", "Chácara"])
         quantidade_pessoas = random.randint(1, 6)
         inserir_residencia(conn, i, id_usuario, tipo_residencia, quantidade_pessoas)
 
     tipos_comodos = ["Sala", "Cozinha", "Quarto", "Banheiro", "Varanda"]
-    for i in range(1, 11):
-        id_usuario = random.randint(1, 10)
+    for i in range(1, 51):
+        id_usuario = i  # Garantir que o id_usuario seja o mesmo
         nome_comodo = random.choice(tipos_comodos)
         descricao = f"Cômodo {i} - {random.choice(['bem iluminado', 'arejado', 'reformado', 'com móveis novos'])}"
         inserir_comodo(conn, i, id_usuario, nome_comodo, descricao)
 
-    for i in range(1, 11):
-        id_comodo = random.randint(1, 10)
+    for i in range(1, 51):
+        id_comodo = i  # Garantir que o id_comodo seja consistente
         nome_comodo = random.choice(tipos_comodos)
 
         if nome_comodo == "Cozinha":
@@ -122,17 +127,18 @@ def inserir_dados(conn):
         descricao = f"Eletrodoméstico {i} - {random.choice(['novo', 'usado', 'de última geração'])}"
         inserir_eletrodomestico(conn, i, id_comodo, nome_eletrodomestico, potencia_watts, horas_uso_dia, descricao)
 
-    for i in range(1, 11):
-        id_usuario = random.randint(1, 10)  
-        mes_referencia = f"2024-0{i}-01"
+    for i in range(1, 51):
+        id_usuario = i  # Garantir que o id_usuario seja o mesmo
+        mes_referencia = f"2024-0{i % 12 + 1}-01"  # Para evitar valores fora do alcance de meses
         consumo_mensal_kwh = round(random.uniform(100.0, 1000.0), 2)
         inserir_consumo_mensal(conn, id_usuario, mes_referencia, consumo_mensal_kwh)
 
-    for i in range(1, 11):
-        id_usuario = random.randint(1, 10)
+    for i in range(1, 51):
+        id_usuario = i  # Garantir que o id_usuario seja o mesmo
         pontos_totais = random.randint(10, 100)
         data_atualizacao = datetime.now().strftime('%Y-%m-%d')
         inserir_pontuacao(conn, i, id_usuario, pontos_totais, data_atualizacao)
+
 
 
 def menu():
