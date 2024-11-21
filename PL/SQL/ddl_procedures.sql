@@ -7,11 +7,12 @@ CREATE OR REPLACE PROCEDURE INSERIR_USUARIO (
 BEGIN
     INSERT INTO T_PE_USUARIOS (id_usuario, nome, email, senha)
     VALUES (p_id_usuario, p_nome, p_email, p_senha);
+
 EXCEPTION
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20001, 'Erro: Já existe um usuário com este ID ou e-mail.');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Erro ineerado ao inserir usuário: ' || SQLERRM);
+        RAISE_APPLICATION_ERROR(-20002, 'Erro inesperado ao inserir usuário: ' || SQLERRM);
 END;
 
 CREATE OR REPLACE PROCEDURE INSERIR_ENDERECO (
@@ -28,14 +29,14 @@ CREATE OR REPLACE PROCEDURE INSERIR_ENDERECO (
 BEGIN
     INSERT INTO T_PE_ENDERECOS (id_endereco, id_usuario, logradouro, numero, complemento, bairro, cidade, estado, cep)
     VALUES (p_id_endereco, p_id_usuario, p_logradouro, p_numero, p_complemento, p_bairro, p_cidade, p_estado, p_cep);
+
 EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        RAISE_APPLICATION_ERROR(-20003, 'Erro: O usuário eecificado não existe.');
     WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20004, 'Erro: Já existe um endereço com este ID.');
+        RAISE_APPLICATION_ERROR(-20003, 'Erro: Já existe um endereço com este ID.');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20005, 'Erro ineerado ao inserir endereço: ' || SQLERRM);
+        RAISE_APPLICATION_ERROR(-20004, 'Erro inesperado ao inserir endereço: ' || SQLERRM);
 END;
+
 
 CREATE OR REPLACE PROCEDURE INSERIR_RESIDENCIA (
     p_id_residencia IN NUMBER,

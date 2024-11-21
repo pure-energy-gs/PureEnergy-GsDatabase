@@ -140,7 +140,6 @@ def inserir_dados(conn):
         inserir_pontuacao(conn, i, id_usuario, pontos_totais, data_atualizacao)
 
 
-
 def menu():
     print("Escolha uma opção:")
     print("1 - Inserir dados automaticamente.")
