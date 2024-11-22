@@ -6,8 +6,8 @@ def criar_conexao():
     try:
         dsnStr = oracledb.makedsn("oracle.fiap.com.br", 1521, "ORCL")
         conn = oracledb.connect(
-            user="rm553621",
-            password="051102",
+            user="rm553844",
+            password="020705",
             dsn=dsnStr
         )
         print("Conexão estabelecida com sucesso.")
@@ -60,84 +60,90 @@ def inserir_consumo_mensal(conn, id_usuario, mes_referencia, consumo_mensal_kwh)
         print(f"Erro ao inserir consumo mensal: {e}")
 
 
-def inserir_pontuacao(conn, id_pontuacao, id_usuario, pontos_totais, data_atualizacao):
+def inserir_pontuacao_usuario(conn, id_pontuacao, id_usuario, pontos_totais, data_atualizacao):
     try:
         data_atualizacao_date = datetime.strptime(data_atualizacao, '%Y-%m-%d')
-        chamar_procedure(conn, "inserir_pontuacao", [id_pontuacao, id_usuario, pontos_totais, data_atualizacao_date])
+        # Corrigido para chamar a procedure correta
+        chamar_procedure(conn, "inserir_pontuacao_usuario", [id_pontuacao, id_usuario, pontos_totais, data_atualizacao_date])
     except oracledb.DatabaseError as e:
-        print(f"Erro ao executar a procedure inserir_pontuacao:", e)
+        print(f"Erro ao executar a procedure inserir_pontuacao_usuario:", e)
+
 
 def inserir_dados(conn):
     print("Inserindo dados automaticamente nas tabelas...")
 
-    nomes = ["Ana", "Carlos", "Fernanda", "João", "Larissa", "Marcelo", "Patricia", "Ricardo", "Vanessa", "Gustavo",
-             "Pedro", "Luiza", "Rafael", "Marcela", "Vitor", "Paula", "Felipe", "Isabela", "Danilo", "Marta",
-             "Roberto", "Simone", "Gustavo", "Bárbara", "Thiago", "Jéssica", "Eduardo", "Mariana", "André", "Tatiane",
-             "Bruna", "Carla", "Tiago", "Lúcio", "Aline", "Cristiano", "Sabrina", "Victor", "Débora", "José", "Lúcia",
-             "Rogério", "Daniela", "Anderson", "Cristiane", "César", "Natália", "Rui", "Cláudia", "Alfredo", "Gisele"]
+    # Lista com 10 nomes de usuários americanos
+    nomes = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Cristhian", "Charles", "Thomas"]
 
-    for i in range(1, 51):
+    # Inserir usuários com ID único
+    for i in range(1, 11):
         nome = nomes[i-1]
         email = f"{nome.lower()}@exemplo.com"
         senha = f"senha{i * 3}"
         inserir_usuario(conn, i, nome, email, senha)
 
-    for i in range(1, 51):
-        id_usuario = i  # Mantendo o id_usuario consistente com o número do loop
-        logradouro = f"Rua {random.choice(['Avenida', 'Rua', 'Praça'])} {random.randint(1, 999)}"
+    # Inserir endereços
+    for i in range(1, 11):
+        id_usuario = i
+        logradouro = f"Street {random.choice(['Main', 'Oak', 'Pine', 'Maple'])} {random.randint(1, 999)}"
         numero = str(random.randint(1, 999))
-        complemento = f"Bloco {random.choice(['A', 'B', 'C'])} - {random.choice(['Apto', 'Casa', 'Comércio'])} {i}"
-        bairro = f"Bairro {random.choice(['Central', 'Norte', 'Sul', 'Leste', 'Oeste'])}"
-        cidade = random.choice(['São Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Curitiba', 'Porto Alegre'])
-        estado = random.choice(['SP', 'RJ', 'MG', 'PR', 'RS'])
+        complemento = f"Suite {random.choice(['A', 'B', 'C'])} - {random.choice(['Apto', 'House', 'Office'])} {i}"
+        bairro = f"Neighborhood {random.choice(['North', 'South', 'East', 'West'])}"
+        cidade = random.choice(['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'])
+        estado = random.choice(['NY', 'CA', 'IL', 'TX', 'AZ'])
         cep = f"{random.randint(10000, 99999)}-{random.randint(1000, 9999)}"
         inserir_endereco(conn, i, id_usuario, logradouro, numero, complemento, bairro, cidade, estado, cep)
 
-    for i in range(1, 51):
-        id_usuario = i  # Garantir que o id_usuario seja o mesmo
-        tipo_residencia = random.choice(["Casa", "Apartamento", "Chácara"])
+    # Inserir residências
+    for i in range(1, 11):
+        id_usuario = i
+        tipo_residencia = random.choice(["House", "Apartment", "Condo"])
         quantidade_pessoas = random.randint(1, 6)
         inserir_residencia(conn, i, id_usuario, tipo_residencia, quantidade_pessoas)
 
-    tipos_comodos = ["Sala", "Cozinha", "Quarto", "Banheiro", "Varanda"]
-    for i in range(1, 51):
-        id_usuario = i  # Garantir que o id_usuario seja o mesmo
+    # Inserir cômodos
+    tipos_comodos = ["Living Room", "Kitchen", "Bedroom", "Bathroom", "Balcony"]
+    for i in range(1, 11):
+        id_usuario = i
         nome_comodo = random.choice(tipos_comodos)
-        descricao = f"Cômodo {i} - {random.choice(['bem iluminado', 'arejado', 'reformado', 'com móveis novos'])}"
+        descricao = f"Room {i} - {random.choice(['spacious', 'bright', 'renovated', 'with new furniture'])}"
         inserir_comodo(conn, i, id_usuario, nome_comodo, descricao)
 
-    for i in range(1, 51):
-        id_comodo = i  # Garantir que o id_comodo seja consistente
+    # Inserir eletrodomésticos
+    for i in range(1, 11):
+        id_comodo = i
         nome_comodo = random.choice(tipos_comodos)
 
-        if nome_comodo == "Cozinha":
-            eletrodomesticos = ["Geladeira", "Microondas", "Fogão"]
-        elif nome_comodo == "Quarto":
-            eletrodomesticos = ["Ar-condicionado", "Ventilador", "Lâmpada"]
-        elif nome_comodo == "Sala":
-            eletrodomesticos = ["Ar-condicionado", "TV", "Home Theater"]
-        elif nome_comodo == "Banheiro":
-            eletrodomesticos = ["Secador de cabelo", "Lâmpada"]
-        else:  # Varanda
-            eletrodomesticos = ["Ventilador", "Lâmpada"]
+        if nome_comodo == "Kitchen":
+            eletrodomesticos = ["Refrigerator", "Microwave", "Oven"]
+        elif nome_comodo == "Bedroom":
+            eletrodomesticos = ["Air conditioner", "Fan", "Lamp"]
+        elif nome_comodo == "Living Room":
+            eletrodomesticos = ["Air conditioner", "TV", "Home Theater"]
+        elif nome_comodo == "Bathroom":
+            eletrodomesticos = ["Hair dryer", "Lamp"]
+        else:  # Balcony
+            eletrodomesticos = ["Fan", "Lamp"]
 
         nome_eletrodomestico = random.choice(eletrodomesticos)
         potencia_watts = random.randint(500, 3000)
         horas_uso_dia = random.randint(1, 10)
-        descricao = f"Eletrodoméstico {i} - {random.choice(['novo', 'usado', 'de última geração'])}"
+        descricao = f"Appliance {i} - {random.choice(['new', 'used', 'latest model'])}"
         inserir_eletrodomestico(conn, i, id_comodo, nome_eletrodomestico, potencia_watts, horas_uso_dia, descricao)
 
-    for i in range(1, 51):
-        id_usuario = i  # Garantir que o id_usuario seja o mesmo
-        mes_referencia = f"2024-0{i % 12 + 1}-01"  # Para evitar valores fora do alcance de meses
+    # Inserir consumo mensal
+    for i in range(1, 11):
+        id_usuario = i
+        mes_referencia = f"2024-{i % 12 + 1:02d}-01"  # Formatar o mês com 2 dígitos
         consumo_mensal_kwh = round(random.uniform(100.0, 1000.0), 2)
         inserir_consumo_mensal(conn, id_usuario, mes_referencia, consumo_mensal_kwh)
 
-    for i in range(1, 51):
-        id_usuario = i  # Garantir que o id_usuario seja o mesmo
+    # Inserir pontuação
+    for i in range(1, 11):
+        id_usuario = i
         pontos_totais = random.randint(10, 100)
         data_atualizacao = datetime.now().strftime('%Y-%m-%d')
-        inserir_pontuacao(conn, i, id_usuario, pontos_totais, data_atualizacao)
+        inserir_pontuacao_usuario(conn, i, id_usuario, pontos_totais, data_atualizacao)
 
 
 def menu():

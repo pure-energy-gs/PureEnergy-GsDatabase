@@ -11,8 +11,8 @@ def criar_conexao():
         
         
         conn = oracledb.connect(
-            user="rm553621",
-            password="051102",
+            user="rm553844",
+            password="020705",
             dsn=dsnStr
         )
         
