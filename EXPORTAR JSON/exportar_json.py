@@ -62,7 +62,6 @@ def exportar_para_json():
             colunas = [col[0] for col in cursor.description]  
             registros = cursor.fetchall()  
 
-            # Converte os dados em um dicionário
             dados[tabela] = [dict(zip(colunas, registro)) for registro in registros]
         
         
