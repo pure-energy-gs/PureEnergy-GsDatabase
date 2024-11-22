@@ -51,7 +51,7 @@ def inserir_consumo_mensal(conn, id_usuario, mes_referencia, consumo_mensal_kwh)
 
         mes_referencia_date = datetime.strptime(mes_referencia, '%Y-%m-%d').date()
 
-        # Chamar a procedure
+        #
         chamar_procedure(conn, "INSERIR_CONSUMO_MENSAL", [id_consumo_mensal, id_usuario, mes_referencia_date, consumo_mensal_kwh])
         print(f"Consumo mensal para {mes_referencia} inserido com sucesso.")
     except ValueError as e:
@@ -63,7 +63,7 @@ def inserir_consumo_mensal(conn, id_usuario, mes_referencia, consumo_mensal_kwh)
 def inserir_pontuacao_usuario(conn, id_pontuacao, id_usuario, pontos_totais, data_atualizacao):
     try:
         data_atualizacao_date = datetime.strptime(data_atualizacao, '%Y-%m-%d')
-        # Corrigido para chamar a procedure correta
+        
         chamar_procedure(conn, "inserir_pontuacao_usuario", [id_pontuacao, id_usuario, pontos_totais, data_atualizacao_date])
     except oracledb.DatabaseError as e:
         print(f"Erro ao executar a procedure inserir_pontuacao_usuario:", e)
@@ -72,17 +72,17 @@ def inserir_pontuacao_usuario(conn, id_pontuacao, id_usuario, pontos_totais, dat
 def inserir_dados(conn):
     print("Inserindo dados automaticamente nas tabelas...")
 
-    # Lista com 10 nomes de usuários americanos
+    
     nomes = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Cristhian", "Charles", "Thomas"]
 
-    # Inserir usuários com ID único
+    
     for i in range(1, 11):
         nome = nomes[i-1]
         email = f"{nome.lower()}@exemplo.com"
         senha = f"senha{i * 3}"
         inserir_usuario(conn, i, nome, email, senha)
 
-    # Inserir endereços
+    
     for i in range(1, 11):
         id_usuario = i
         logradouro = f"Street {random.choice(['Main', 'Oak', 'Pine', 'Maple'])} {random.randint(1, 999)}"
@@ -94,14 +94,14 @@ def inserir_dados(conn):
         cep = f"{random.randint(10000, 99999)}-{random.randint(1000, 9999)}"
         inserir_endereco(conn, i, id_usuario, logradouro, numero, complemento, bairro, cidade, estado, cep)
 
-    # Inserir residências
+    
     for i in range(1, 11):
         id_usuario = i
         tipo_residencia = random.choice(["House", "Apartment", "Condo"])
         quantidade_pessoas = random.randint(1, 6)
         inserir_residencia(conn, i, id_usuario, tipo_residencia, quantidade_pessoas)
 
-    # Inserir cômodos
+    
     tipos_comodos = ["Living Room", "Kitchen", "Bedroom", "Bathroom", "Balcony"]
     for i in range(1, 11):
         id_usuario = i
@@ -109,7 +109,7 @@ def inserir_dados(conn):
         descricao = f"Room {i} - {random.choice(['spacious', 'bright', 'renovated', 'with new furniture'])}"
         inserir_comodo(conn, i, id_usuario, nome_comodo, descricao)
 
-    # Inserir eletrodomésticos
+    
     for i in range(1, 11):
         id_comodo = i
         nome_comodo = random.choice(tipos_comodos)
@@ -131,14 +131,14 @@ def inserir_dados(conn):
         descricao = f"Appliance {i} - {random.choice(['new', 'used', 'latest model'])}"
         inserir_eletrodomestico(conn, i, id_comodo, nome_eletrodomestico, potencia_watts, horas_uso_dia, descricao)
 
-    # Inserir consumo mensal
+    
     for i in range(1, 11):
         id_usuario = i
         mes_referencia = f"2024-{i % 12 + 1:02d}-01"  # Formatar o mês com 2 dígitos
         consumo_mensal_kwh = round(random.uniform(100.0, 1000.0), 2)
         inserir_consumo_mensal(conn, id_usuario, mes_referencia, consumo_mensal_kwh)
 
-    # Inserir pontuação
+    
     for i in range(1, 11):
         id_usuario = i
         pontos_totais = random.randint(10, 100)
